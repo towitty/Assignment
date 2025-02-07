@@ -89,6 +89,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     // Compose
+    implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

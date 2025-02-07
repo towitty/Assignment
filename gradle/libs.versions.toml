@@ -14,6 +14,7 @@ roomCompiler = "2.6.1"
 kotlinxCoroutinesCore = "1.9.0"
 kotlinxCoroutinesTest = "1.8.1"
 lifecycleRuntimeKtx = "2.8.7"
+constraintlayoutCompose = "1.1.0"
 activityCompose = "1.9.3"
 composeBom = "2024.10.00"
 
@@ -32,6 +33,7 @@ retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", ve
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesCore" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

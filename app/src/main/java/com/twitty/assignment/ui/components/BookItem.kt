@@ -27,14 +27,13 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.twitty.assignment.R
 import com.twitty.assignment.model.Book
-import com.twitty.assignment.model.emptyBook
 import com.twitty.assignment.ui.theme.AppIcons
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ExpandableBookItem(
     book: Book,
-    onClickIcon: () -> Unit,
+    onClickIcon: (Book) -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
     var expanded by rememberSaveable { mutableStateOf(false) }
@@ -99,7 +98,7 @@ fun ExpandableBookItem(
                     bottom.linkTo(image.bottom)
                     end.linkTo(parent.end)
                 }
-                .clickable { onClickIcon() }
+                .clickable { onClickIcon(book) }
         )
     }
 }
@@ -108,7 +107,12 @@ fun ExpandableBookItem(
 @Composable
 fun PreviewExpandableBookItem() {
     ExpandableBookItem(
-        book = emptyBook,
+        book = Book(
+            title = "Android Studio를 활용한 안드로이드 프로그래밍 (Android 12.0(S) 지원)",
+            link = "https://search.shopping.naver.com/book/catalog/32436264666",
+            imageUrl = "https://shopping-phinf.pstatic.net/main_3243626/32436264666.20221019104929.jpg",
+            isFavorites = false
+        ),
         onClickIcon = {}
     )
 }

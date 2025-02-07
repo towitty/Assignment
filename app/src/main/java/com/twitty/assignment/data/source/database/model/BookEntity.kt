@@ -2,6 +2,7 @@ package com.twitty.assignment.data.source.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.twitty.assignment.model.Book
 
 @Entity(tableName = "books")
 data class BookEntity(
@@ -17,4 +18,14 @@ data class BookEntity(
     val isbn: String,
     val description: String,
     val isFavorites: Boolean = false,
+) {
+    fun toggleFavorites() = copy(isFavorites = !isFavorites)
+}
+
+fun BookEntity.asBook() = Book(
+    isbn = isbn,
+    title = title,
+    link = link,
+    imageUrl = image,
+    isFavorites = isFavorites
 )

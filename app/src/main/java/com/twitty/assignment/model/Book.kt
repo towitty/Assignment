@@ -1,5 +1,7 @@
 package com.twitty.assignment.model
 
+import com.twitty.assignment.data.source.database.model.BookEntity
+
 data class Book(
     val isbn: String = "0",
     val title: String,
@@ -8,9 +10,15 @@ data class Book(
     val isFavorites: Boolean = false
 )
 
-val emptyBook = Book(
-    title = "Android Studio를 활용한 안드로이드 프로그래밍 (Android 12.0(S) 지원)",
-    link = "https://search.shopping.naver.com/book/catalog/32436264666",
-    imageUrl = "https://shopping-phinf.pstatic.net/main_3243626/32436264666.20221019104929.jpg",
-    isFavorites = false
+fun Book.asEntity(isFavorites: Boolean) = BookEntity(
+    title = title,
+    link = link,
+    image = imageUrl,
+    author = "",
+    price = "",
+    publisher = "",
+    publicationDate = "",
+    isbn = isbn,
+    description = "",
+    isFavorites = isFavorites
 )

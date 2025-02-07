@@ -37,7 +37,10 @@ fun SearchScreen(
                     .padding(start = 16.dp, end = 16.dp)
             ) {
                 items(items = books, key = { it.isbn }) { book ->
-                    ExpandableBookItem(book = book) {}
+                    ExpandableBookItem(
+                        book = book,
+                        onClickIcon = viewModel::toggleFavoriteBook
+                    )
                 }
             }
         }

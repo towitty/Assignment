@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.twitty.assignment.data.source.database.model.BookEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BookDao {
@@ -26,6 +27,6 @@ interface BookDao {
     suspend fun fetchBookByIsbn(isbn: String): List<BookEntity>
 
     @Query("SELECT * FROM books WHERE isFavorites = 1")
-    fun fetchFavoriteBooks(): List<BookEntity>
+    fun fetchFavoriteBooks(): Flow<List<BookEntity>>
 
 }

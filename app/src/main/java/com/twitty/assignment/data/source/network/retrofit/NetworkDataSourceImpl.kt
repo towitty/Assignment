@@ -1,6 +1,8 @@
 package com.twitty.assignment.data.source.network.retrofit
 
+import android.util.Log
 import com.twitty.assignment.data.source.network.model.NetworkBookResponse
+import com.twitty.assignment.data.source.network.model.emptyNetworkBookResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -11,22 +13,20 @@ class NetworkDataSourceImpl @Inject constructor(
     private val bookApi: ApiService
 ) : NetworkDataSource {
 
-    override suspend fun searchBooks(query: String): Result<NetworkBookResponse> =
-        withContext(Dispatchers.IO) {
+    override suspend fun searchBooks(query: String): NetworkBookResponse {
+        return withContext(Dispatchers.IO) {
             try {
-                val response: Response<NetworkBookResponse> = bookApi.searchBooks(query)
-
+                val response = bookApi.searchBooks(query)
                 if (response.isSuccessful) {
-                    response.body()?.let { body ->
-                        Result.success(body)
-                    } ?: Result.failure(IOException("Response body is null"))
+                    response.body() ?: emptyNetworkBookResponse
                 } else {
-                    Result.failure(IOException("API request failed code: ${response.code()}"))
+                    Log.e("Network", "fail code: ${response.code()}")
+                    emptyNetworkBookResponse
                 }
-            } catch (e: IOException) {
-                Result.failure(IOException("Network error: ${e.message}"))
             } catch (e: Exception) {
-                Result.failure(Exception("An unexpected error occurred: ${e.message}"))
+                Log.e("Network","NetworkException: ${e.message}")
+                emptyNetworkBookResponse
             }
         }
+    }
 }

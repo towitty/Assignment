@@ -33,7 +33,7 @@ import com.twitty.assignment.ui.theme.AppIcons
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ExpandableBookItem(
-    book: Book = emptyBook,
+    book: Book,
     onClickIcon: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current

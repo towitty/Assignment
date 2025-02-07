@@ -1,6 +1,7 @@
 package com.twitty.assignment.data.source.network.model
 
 import com.google.gson.annotations.SerializedName
+import com.twitty.assignment.model.Book
 
 data class NetworkBook(
     @SerializedName("title")
@@ -21,4 +22,12 @@ data class NetworkBook(
     val isbn: String,
     @SerializedName("description")
     val description: String,
+)
+
+fun NetworkBook.asBook() = Book(
+    isbn = isbn,
+    title = title,
+    link = link,
+    imageUrl = image,
+    isFavorites = false
 )

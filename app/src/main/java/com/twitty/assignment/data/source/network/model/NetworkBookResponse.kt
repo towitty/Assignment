@@ -10,3 +10,11 @@ data class NetworkBookResponse(
     @SerializedName("items")
     val books:List<NetworkBook>
 )
+
+val emptyNetworkBookResponse = NetworkBookResponse(
+    lastBuildDate = "",
+    total = 0,
+    start = 0,
+    display = 0,
+    books = emptyList()
+)

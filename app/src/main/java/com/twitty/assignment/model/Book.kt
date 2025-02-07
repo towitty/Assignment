@@ -1,6 +1,7 @@
 package com.twitty.assignment.model
 
 data class Book(
+    val isbn: String = "0",
     val title: String,
     val link: String,
     val imageUrl: String,

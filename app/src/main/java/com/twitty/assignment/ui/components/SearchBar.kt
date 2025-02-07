@@ -19,7 +19,7 @@ import com.twitty.assignment.ui.theme.AppIcons
 
 @Composable
 fun SearchBar(
-    onSearch: () -> Unit,
+    onSearch: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var searchText by remember { mutableStateOf("") }
@@ -28,12 +28,12 @@ fun SearchBar(
         value = searchText,
         onValueChange = { searchText = it },
         trailingIcon = {
-            IconButton(onClick = onSearch) {
+            IconButton(onClick = { onSearch(searchText) }) {
                 Icon(imageVector = AppIcons.Search, contentDescription = stringResource(id = R.string.search))
             }
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { onSearch() }),
+        keyboardActions = KeyboardActions(onSearch = { onSearch(searchText) }),
         modifier = modifier
     )
 }

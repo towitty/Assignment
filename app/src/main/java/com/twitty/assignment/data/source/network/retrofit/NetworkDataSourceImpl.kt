@@ -1,32 +1,25 @@
 package com.twitty.assignment.data.source.network.retrofit
 
-import android.util.Log
-import com.twitty.assignment.data.source.network.model.NetworkBookResponse
-import com.twitty.assignment.data.source.network.model.emptyNetworkBookResponse
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import retrofit2.Response
-import java.io.IOException
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.twitty.assignment.data.source.network.model.NetworkBook
+import com.twitty.assignment.data.source.paging.BookPagingSource
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class NetworkDataSourceImpl @Inject constructor(
     private val bookApi: ApiService
 ) : NetworkDataSource {
 
-    override suspend fun searchBooks(query: String): NetworkBookResponse {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = bookApi.searchBooks(query)
-                if (response.isSuccessful) {
-                    response.body() ?: emptyNetworkBookResponse
-                } else {
-                    Log.e("Network", "fail code: ${response.code()}")
-                    emptyNetworkBookResponse
-                }
-            } catch (e: Exception) {
-                Log.e("Network","NetworkException: ${e.message}")
-                emptyNetworkBookResponse
-            }
-        }
+    override suspend fun searchBooks(query: String): Flow<PagingData<NetworkBook>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                initialLoadSize = 10,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { BookPagingSource(bookApi, query) }
+        ).flow
     }
 }

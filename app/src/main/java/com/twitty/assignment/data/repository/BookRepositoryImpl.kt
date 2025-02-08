@@ -1,5 +1,7 @@
 package com.twitty.assignment.data.repository
 
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.twitty.assignment.data.source.database.dao.BookDao
 import com.twitty.assignment.data.source.database.model.asBook
 import com.twitty.assignment.data.source.network.model.asBook
@@ -15,10 +17,12 @@ class BookRepositoryImpl @Inject constructor(
     private val networkDataSource: NetworkDataSource
 ) : BookRepository {
 
-    override suspend fun searchBooks(query: String): List<Book> {
-        val networkBookResponse = networkDataSource.searchBooks(query)
-        return networkBookResponse.books.map { it.asBook() }
-    }
+    override suspend fun searchBooks(query: String): Flow<PagingData<Book>> = networkDataSource.searchBooks(query)
+        .map { pagingData ->
+            pagingData.map { networkBook ->
+                networkBook.asBook()
+            }
+        }
 
     override suspend fun fetchFavoriteBooks(): Flow<List<Book>> = bookDao.fetchFavoriteBooks()
         .map { entities ->

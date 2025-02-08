@@ -2,6 +2,7 @@ package com.twitty.assignment.data.source.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.twitty.assignment.common.PAGE_SIZE
 import com.twitty.assignment.data.source.network.model.NetworkBook
 import com.twitty.assignment.data.source.network.model.NetworkBookResponse
 import com.twitty.assignment.data.source.network.retrofit.ApiService
@@ -17,13 +18,13 @@ class BookPagingSource @Inject constructor(
         val page = params.key ?: 0
         return try {
             val response: Response<NetworkBookResponse> =
-                bookApi.searchBooks(query = query, display = params.loadSize, start = (params.loadSize * page) + 1)
+                bookApi.searchBooks(query = query, display = PAGE_SIZE, start = (PAGE_SIZE * page) + 1)
 
             if (response.isSuccessful) {
                 val books = response.body()?.books ?: emptyList()
                 val total = response.body()?.total ?: 0
                 val prevKey = if (page == 0) null else page - 1
-                val nextKey = if ((params.loadSize * page) + 10 >= total) null else page + 1
+                val nextKey = if ((PAGE_SIZE * page) + PAGE_SIZE >= total) null else page + 1
 
                 LoadResult.Page(
                     data = books,

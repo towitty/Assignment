@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.twitty.assignment.common.PAGE_SIZE
 import com.twitty.assignment.ui.components.ExpandableBookItem
 import com.twitty.assignment.ui.components.SearchBar
 
@@ -50,9 +51,9 @@ fun SearchScreen(
                     }
 
                     val bookIndex = books.itemSnapshotList.indexOf(book) + 1
-                    if (bookIndex % 10 == 0 && bookIndex > 9) {
+                    if (bookIndex % PAGE_SIZE == 0 && bookIndex > 9) {
                         Text(
-                            text = "${bookIndex / 10}",
+                            text = "${bookIndex / PAGE_SIZE}",
                             textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -61,10 +62,10 @@ fun SearchScreen(
                     }
                 }
 
-                if (books.itemCount % 10 != 0) {
+                if (books.itemCount % PAGE_SIZE != 0) {
                     item {
                         Text(
-                            text = "${(books.itemCount / 10.0).toInt() + 1}",
+                            text = "${(books.itemCount / PAGE_SIZE) + 1}",
                             textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .fillMaxWidth()

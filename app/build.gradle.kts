@@ -89,6 +89,10 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
+    // Paging
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+
     // Compose
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.core.ktx)

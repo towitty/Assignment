@@ -34,29 +34,25 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             bookRepository.fetchFavoriteBooks().collect { newFavoriteBooks ->
                 favoriteBooks.update { newFavoriteBooks }
-                _books.update { oldBooks ->
-                    oldBooks.map { oldBook ->
-                        newFavoriteBooks.find { it.isbn == oldBook.isbn }?.let { favoriteBook ->
-                            oldBook.copy(isFavorites = favoriteBook.isFavorites)
-                        } ?: oldBook.copy(isFavorites = false)
-                    }
-                }
+                updateBooksWithFavorites()
+            }
+        }
+    }
+
+    private fun updateBooksWithFavorites() {
+        _books.update { oldBooks ->
+            oldBooks.map { oldBook ->
+                favoriteBooks.value.find { it.isbn == oldBook.isbn }?.let { favoriteBook ->
+                    oldBook.copy(isFavorites = true)
+                } ?: oldBook.copy(isFavorites = false)
             }
         }
     }
 
     fun searchBooks(title: String) {
         viewModelScope.launch {
-            val currentFavoriteBooks = favoriteBooks.value
             bookRepository.searchBooks(title).cachedIn(this).collect { pagingData ->
-                val updatedPagingData = pagingData.map { book ->
-                    if (currentFavoriteBooks.any { favoriteBook -> favoriteBook.isbn == book.isbn }) {
-                        book.copy(isFavorites = true)
-                    } else {
-                        book
-                    }
-                }
-                _books.emit(updatedPagingData)
+                _books.emit(pagingData)
             }
         }
     }
@@ -64,16 +60,6 @@ class SearchViewModel @Inject constructor(
     fun toggleFavoriteBook(book: Book) {
         viewModelScope.launch {
             bookRepository.toggleFavoriteBook(book)
-
-            _books.update { oldBooks ->
-                oldBooks.map { oldBook ->
-                    if (oldBook.isbn == book.isbn) {
-                        oldBook.copy(isFavorites = !oldBook.isFavorites)
-                    } else {
-                        oldBook
-                    }
-                }
-            }
         }
     }
 

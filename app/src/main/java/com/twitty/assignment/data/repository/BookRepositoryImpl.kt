@@ -32,18 +32,20 @@ class BookRepositoryImpl @Inject constructor(
         }
 
     override suspend fun toggleFavoriteBook(book: Book) {
-        val books = bookDao.fetchBookByIsbn(book.isbn)
-
-        books.firstOrNull()?.let { bookEntity ->
-            bookDao.updateBook(bookEntity.toggleFavorites())
-        } ?: bookDao.insertBook(book.asEntity(true))
+        if (book.isFavorites) {
+            removeFavoriteBook(book)
+        } else {
+            addFavoriteBook(book)
+        }
     }
 
     override suspend fun removeFavoriteBook(book: Book) {
-        TODO("Not yet implemented")
+        bookDao.fetchBookByIsbn(book.isbn).firstOrNull()?.let { bookEntity ->
+            bookDao.deleteBook(bookEntity)
+        }
     }
 
     override suspend fun addFavoriteBook(book: Book) {
-        TODO("Not yet implemented")
+        bookDao.insertBook(book.asEntity(true))
     }
 }

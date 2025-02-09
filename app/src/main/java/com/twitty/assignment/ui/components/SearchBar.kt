@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,17 +24,26 @@ fun SearchBar(
     modifier: Modifier = Modifier
 ) {
     var searchText by remember { mutableStateOf("") }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
         value = searchText,
         onValueChange = { searchText = it },
         trailingIcon = {
-            IconButton(onClick = { onSearch(searchText) }) {
+            IconButton(onClick = {
+                keyboardController?.hide()
+                onSearch(searchText)
+            }) {
                 Icon(imageVector = AppIcons.Search, contentDescription = stringResource(id = R.string.search))
             }
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { onSearch(searchText) }),
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                keyboardController?.hide()
+                onSearch(searchText)
+            }
+        ),
         modifier = modifier
     )
 }

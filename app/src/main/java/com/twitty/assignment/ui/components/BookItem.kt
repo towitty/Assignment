@@ -43,11 +43,7 @@ fun ExpandableBookItem(
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable {
-                if (expanded) {
-                    if (Uri.parse(book.link).scheme != null) { // Uri 유효성 확인
-                        uriHandler.openUri(book.link)
-                    }
-                } else {
+                if (!expanded) {
                     expanded = true
                 }
             }
@@ -86,6 +82,13 @@ fun ExpandableBookItem(
                 text = book.link,
                 softWrap = expanded,
                 overflow = if (expanded) TextOverflow.Clip else TextOverflow.Ellipsis,
+                modifier = if (expanded) {
+                    Modifier.clickable {
+                        if (Uri.parse(book.link).scheme != null) { // Uri 유효성 확인
+                            uriHandler.openUri(book.link)
+                        }
+                    }
+                } else Modifier
             )
         }
 
